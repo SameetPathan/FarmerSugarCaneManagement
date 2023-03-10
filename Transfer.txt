@@ -1,7 +1,9 @@
 const express = require('express');
-const axios = require('axios');
+const fetch = require('node-fetch');
 
 const app = express();
+
+app.use(express.json());
 
 app.post('/login', async (req, res) => {
   const loginData = {
@@ -11,15 +13,17 @@ app.post('/login', async (req, res) => {
   };
 
   const config = {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json'
-    }
+    },
+    body: JSON.stringify(loginData)
   };
 
   try {
-    const response = await axios.post('https://pricekub/auth/login', loginData, config);
+    const response = await fetch('https://pricekub/auth/login', config);
 
-    const cookies = response.headers['set-cookie'];
+    const cookies = response.headers.raw()['set-cookie'];
     cookies.forEach(cookie => {
       const cookieParts = cookie.split(';');
       const cookieName = cookieParts[0].split('=')[0];
