@@ -1,48 +1,37 @@
-const express = require('express');
-const fetch = require('node-fetch');
+import boto3
 
-const app = express();
+# Initialize the DynamoDB client
+dynamodb = boto3.client('dynamodb')
 
-app.use(express.json());
+# Define the table name
+table_name = 'your-table-name'
 
-app.post('/login', async (req, res) => {
-  const loginData = {
-    name: req.body.name,
-    password: req.body.password,
-    tenant: req.body.tenant
-  };
+# Define the pagination parameters
+page_size = 100  # Number of items to fetch per page
+start_key = None  # Start key for pagination
 
-  const config = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(loginData)
-  };
+# Loop through the pages of the table
+while True:
+    # Fetch a page of items from the table
+    response = dynamodb.scan(
+        TableName=table_name,
+        Limit=page_size,
+        ExclusiveStartKey=start_key,
+        FilterExpression='attribute_not_exists(reviewNoteState)'
+    )
 
-  try {
-    const response = await fetch('https://pricekub/auth/login', config);
+    # Remove the reviewNoteState property from items where it is null
+    items = response['Items']
+    for item in items:
+        if 'reviewNoteState' in item and item['reviewNoteState'] is None:
+            del item['reviewNoteState']
 
-    const cookies = response.headers.raw()['set-cookie'];
-    cookies.forEach(cookie => {
-      const cookieParts = cookie.split(';');
-      const cookieName = cookieParts[0].split('=')[0];
-      const cookieValue = cookieParts[0].split('=')[1];
-      const cookieOptions = {
-        path: '/',
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none'
-      };
-      res.cookie(cookieName, cookieValue, cookieOptions);
-    });
+    # Write the updated items back to the table
+    with dynamodb.batch_write_item(TableName=table_name) as batch:
+        for item in items:
+            batch.put_item(Item=item)
 
-    res.status(200).send({ message: 'Login successful' });
-  } catch (error) {
-    res.status(401).send({ message: 'Login failed' });
-  }
-});
-
-app.listen(3000, () => {
-  console.log('Server listening on port 3000');
-});
+    # Check if there are more pages to fetch
+    start_key = response.get('LastEvaluatedKey', None)
+    if start_key is None:
+        break
