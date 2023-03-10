@@ -35,3 +35,10 @@ while True:
     start_key = response.get('LastEvaluatedKey', None)
     if start_key is None:
         break
+
+
+        FilterExpression='attribute_not_exists(reviewNoteState) OR reviewNoteState = :null OR reviewNoteState NOT IN (:values)',
+        ExpressionAttributeValues={
+            ':null': {'NULL': True},
+            ':values': [{'S': v} for v in exclude_values]
+        }
