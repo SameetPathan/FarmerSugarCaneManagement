@@ -1,44 +1,26 @@
-import boto3
+app.put('/api/data', (req, res) => {
+  const newData = {
+    // new data object
+  };
 
-# Initialize the DynamoDB client
-dynamodb = boto3.client('dynamodb')
+  axios.put('https://external.api.com/data', newData, {
+    headers: {
+      'Cookie': cookie
+    }
+  })
+  .then(response => {
+    res.send('Data updated successfully');
+  })
+  .catch(error => {
+    console.error(error);
+    res.status(500).send('An error occurred');
+  });
+});
 
-# Define the table name
-table_name = 'your-table-name'
-
-# Define the pagination parameters
-page_size = 100  # Number of items to fetch per page
-start_key = None  # Start key for pagination
-
-# Loop through the pages of the table
-while True:
-    # Fetch a page of items from the table
-    response = dynamodb.scan(
-        TableName=table_name,
-        Limit=page_size,
-        ExclusiveStartKey=start_key,
-        FilterExpression='attribute_not_exists(reviewNoteState)'
-    )
-
-    # Remove the reviewNoteState property from items where it is null
-    items = response['Items']
-    for item in items:
-        if 'reviewNoteState' in item and item['reviewNoteState'] is None:
-            del item['reviewNoteState']
-
-    # Write the updated items back to the table
-    with dynamodb.batch_write_item(TableName=table_name) as batch:
-        for item in items:
-            batch.put_item(Item=item)
-
-    # Check if there are more pages to fetch
-    start_key = response.get('LastEvaluatedKey', None)
-    if start_key is None:
-        break
+app.listen(3000, () => console.log('Server running on port 3000'));
 
 
-        FilterExpression='attribute_not_exists(reviewNoteState) OR reviewNoteState = :null OR reviewNoteState NOT IN (:values)',
-        ExpressionAttributeValues={
-            ':null': {'NULL': True},
-            ':values': [{'S': v} for v in exclude_values]
-        }
+
+
+
+
