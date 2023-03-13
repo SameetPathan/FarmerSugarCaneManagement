@@ -1,11 +1,65 @@
-app.put('/api/data', (req, res) => {
+const express = require('express');
+const axios = require('axios');
+const cookieParser = require('cookie-parser');
+
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cookieParser());
+
+app.get('/', (req, res) => {
+  // render the login form
+  res.send(`
+    <form method="POST" action="/login">
+      <label>Username:</label>
+      <input type="text" name="username"><br>
+      <label>Password:</label>
+      <input type="password" name="password"><br>
+      <input type="submit" value="Login">
+    </form>
+  `);
+});
+
+app.post('/login', (req, res) => {
+  const credentials = {
+    username: req.body.username,
+    password: req.body.password
+  };
+
+  axios.post('https://external.api.com/login', credentials, {
+    withCredentials: true
+  })
+  .then(response => {
+    // store cookies in a variable
+    const cookies = response.headers['set-cookie'];
+
+    // set cookies in the response header
+    res.set('Set-Cookie', cookies);
+
+    // render a success message
+    res.send(`
+      <h1>Login successful!</h1>
+      <p>You can now perform a PUT operation.</p>
+      <form method="POST" action="/logout">
+        <input type="submit" value="Logout">
+      </form>
+    `);
+  })
+  .catch(error => {
+    console.error(error);
+    res.status(500).send('An error occurred');
+  });
+});
+
+app.put('/data', (req, res) => {
   const newData = {
     // new data object
   };
 
   axios.put('https://external.api.com/data', newData, {
     headers: {
-      'Cookie': cookie
+      'Cookie': req.headers.cookie
     }
   })
   .then(response => {
@@ -17,10 +71,12 @@ app.put('/api/data', (req, res) => {
   });
 });
 
+app.post('/logout', (req, res) => {
+  // clear cookies from the response header
+  res.set('Set-Cookie', '');
+
+  // redirect to the login page
+  res.redirect('/');
+});
+
 app.listen(3000, () => console.log('Server running on port 3000'));
-
-
-
-
-
-
