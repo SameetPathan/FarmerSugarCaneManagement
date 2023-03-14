@@ -1,82 +1,23 @@
-const express = require('express');
-const axios = require('axios');
-const cookieParser = require('cookie-parser');
+const currentDate = new Date();
+const month = currentDate.getMonth() + 1;
+const day = currentDate.getDate();
+const year = currentDate.getFullYear();
 
-const app = express();
+const formattedDate = `${month.toString().padStart(2, '0')}:${day.toString().padStart(2, '0')}:${year.toString()}`;
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(cookieParser());
+console.log(formattedDate);
 
-app.get('/', (req, res) => {
-  // render the login form
-  res.send(`
-    <form method="POST" action="/login">
-      <label>Username:</label>
-      <input type="text" name="username"><br>
-      <label>Password:</label>
-      <input type="password" name="password"><br>
-      <input type="submit" value="Login">
-    </form>
-  `);
-});
 
-app.post('/login', (req, res) => {
-  const credentials = {
-    username: req.body.username,
-    password: req.body.password
-  };
 
-  axios.post('https://external.api.com/login', credentials, {
-    withCredentials: true
-  })
-  .then(response => {
-    // store cookies in a variable
-    const cookies = response.headers['set-cookie'];
 
-    // set cookies in the response header
-    res.set('Set-Cookie', cookies);
+const formattedDate = '03:14:2023';
+const [month, day, year] = formattedDate.split(':').map(Number);
 
-    // render a success message
-    res.send(`
-      <h1>Login successful!</h1>
-      <p>You can now perform a PUT operation.</p>
-      <form method="POST" action="/logout">
-        <input type="submit" value="Logout">
-      </form>
-    `);
-  })
-  .catch(error => {
-    console.error(error);
-    res.status(500).send('An error occurred');
-  });
-});
+const currentDate = new Date(year, month - 1, day); // Note: Month is zero-indexed in Date object
+const thirtyDaysAgo = new Date(currentDate); // Create a new Date object to avoid modifying the original
 
-app.put('/data', (req, res) => {
-  const newData = {
-    // new data object
-  };
+thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-  axios.put('https://external.api.com/data', newData, {
-    headers: {
-      'Cookie': req.headers.cookie
-    }
-  })
-  .then(response => {
-    res.send('Data updated successfully');
-  })
-  .catch(error => {
-    console.error(error);
-    res.status(500).send('An error occurred');
-  });
-});
+const formattedThirtyDaysAgo = `${(thirtyDaysAgo.getMonth() + 1).toString().padStart(2, '0')}:${thirtyDaysAgo.getDate().toString().padStart(2, '0')}:${thirtyDaysAgo.getFullYear().toString()}`;
 
-app.post('/logout', (req, res) => {
-  // clear cookies from the response header
-  res.set('Set-Cookie', '');
-
-  // redirect to the login page
-  res.redirect('/');
-});
-
-app.listen(3000, () => console.log('Server running on port 3000'));
+console.log(formattedThirtyDaysAgo);
