@@ -1,23 +1,26 @@
-const currentDate = new Date();
-const month = currentDate.getMonth() + 1;
-const day = currentDate.getDate();
-const year = currentDate.getFullYear();
+const AWS = require('aws-sdk');
+AWS.config.update({region: 'us-east-1'});
 
-const formattedDate = `${month.toString().padStart(2, '0')}:${day.toString().padStart(2, '0')}:${year.toString()}`;
+const docClient = new AWS.DynamoDB.DocumentClient();
 
-console.log(formattedDate);
+const params = {
+    TableName: 'myTable',
+    Key: {
+        'id': '12345'
+    },
+    UpdateExpression: 'set #attrName = :attrValue',
+    ExpressionAttributeNames: {
+        '#attrName': 'attributeName'
+    },
+    ExpressionAttributeValues: {
+        ':attrValue': 'newValue'
+    }
+};
 
-
-
-
-const formattedDate = '03:14:2023';
-const [month, day, year] = formattedDate.split(':').map(Number);
-
-const currentDate = new Date(year, month - 1, day); // Note: Month is zero-indexed in Date object
-const thirtyDaysAgo = new Date(currentDate); // Create a new Date object to avoid modifying the original
-
-thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-const formattedThirtyDaysAgo = `${(thirtyDaysAgo.getMonth() + 1).toString().padStart(2, '0')}:${thirtyDaysAgo.getDate().toString().padStart(2, '0')}:${thirtyDaysAgo.getFullYear().toString()}`;
-
-console.log(formattedThirtyDaysAgo);
+docClient.update(params, function(err, data) {
+    if (err) {
+        console.error('Unable to update item', err);
+    } else {
+        console.log('Item updated successfully', data);
+    }
+});
