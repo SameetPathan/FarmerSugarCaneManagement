@@ -1,57 +1,10 @@
-const AWS = require('aws-sdk');
-AWS.config.update({region: 'us-east-1'});
-
-const docClient = new AWS.DynamoDB.DocumentClient();
-
-const params = {
-    TableName: 'Plan',
-    Key: {
-        'id': 'your_item_id_here'
-    },
-    UpdateExpression: 'set invoice_status = :status',
-    ExpressionAttributeValues: {
-        ':status': 'paid'
-    }
-};
-
-docClient.update(params, function(err, data) {
-    if (err) {
-        console.error('Unable to update item', err);
-    } else {
-        console.log('Item updated successfully', data);
-    }
-});
-
-
-
-
-///\
-
-
-const AWS = require('aws-sdk');
-AWS.config.update({region: 'us-east-1'});
-
-const docClient = new AWS.DynamoDB.DocumentClient();
-
-const params = {
-    TableName: 'myTable',
-    Key: {
-        'id': '12345',
-        'sortKey': 'sortKey123'
-    },
-    UpdateExpression: 'set #attrName = :attrValue',
-    ExpressionAttributeNames: {
-        '#attrName': 'attributeName'
-    },
-    ExpressionAttributeValues: {
-        ':attrValue': 'newValue'
-    }
-};
-
-docClient.update(params, function(err, data) {
-    if (err) {
-        console.error('Unable to update item', err);
-    } else {
-        console.log('Item updated successfully', data);
-    }
-});
+ <>
+      <img src={imageUrl} alt="Company Logo" onClick={togglePopover} />
+      <Popover isOpen={popoverOpen} toggle={togglePopover} target={imageUrl}>
+        <PopoverHeader>Company Info</PopoverHeader>
+        <PopoverBody>
+          <div>Company Plan ID: {companyPlanId}</div>
+          <div>Company Name: {companyName}</div>
+        </PopoverBody>
+      </Popover>
+    </>
