@@ -1,1 +1,18 @@
-{"success":true,"data":{"cpaId":"PKP","invoiceApiCallTime":"03-24-2023 07:38:30 CST","parentCpaId":"DevOps","InitPreprocessingLogs":[{"timeStamp":"2023-02-15T13:29:18.203Z","user":"nehahule17@gmail.com"}],"parentCompanyPlanId":"Ops-401K-328f0456-a914-11ed-898d-6ad53e1f7cb7_2022","planLockType":"immediate","companyPlanId":"PK-401K-93999468-8d7b-4fd1-b091-f8d8dccd5892_2022","invoiceCreatedBy":"sameet.pathan@prirosystems.com","isOverallIssueFound":false,"lockHistory":[{"isPlanLock":true,"email":"sameet.pathan@prirosystems.com","timestamp":"03/23/2023 11:53 CDT"},{"email":"rushikeshb@prirosystems.com","isPlanLock":false,"timestamp":"03/01/2023 08:33 CST"},{"email":"tushar@prirosystems.com","isPlanLock":true,"timestamp":"02/22/2023 07:17 CST"},{"email":"tushar@prirosystems.com","isPlanLock":false,"timestamp":"02/22/2023 07:17 CST"},{"email":"tushar@prirosystems.com","isPlanLock":true,"timestamp":"02/22/2023 06:29 CST"},{"email":"suraj@prirosystems.com","isPlanLock":false,"timestamp":"02/13/2023 06:33 CST"},{"email":"suraj@prirosystems.com","isPlanLock":true,"timestamp":"02/13/2023 06:30 CST"}],"initiatedByAuditor":true}}
+  getPlanContext(companyPlanId,cpaId) {
+    
+    let invoicecall=""
+    let invoicecreatedby=""
+    this.props.getPlanContext({ 
+      "item": { "companyPlanId": companyPlanId, "cpaId": cpaId } },
+       (error,response) => { 
+
+        invoicecall=response.data.invoiceApiCallTime
+        invoicecreatedby=response.data.invoiceCreatedBy
+
+       })
+       debugger;
+       this.setState({ InvoiceCreatedby: invoicecreatedby });
+        this.setState({ InvoiceCreatedOn: invoicecall });
+       this.setState({popoverOpen: true});
+      
+  }
