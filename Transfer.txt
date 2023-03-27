@@ -1,18 +1,31 @@
-  getPlanContext(companyPlanId,cpaId) {
+getPlanContext = async (companyPlanId,cpaId) => {
     
-    let invoicecall=""
-    let invoicecreatedby=""
-    this.props.getPlanContext({ 
-      "item": { "companyPlanId": companyPlanId, "cpaId": cpaId } },
-       (error,response) => { 
+  let invoicecall=""
+  let invoicecreatedby=""
+  
+  try {
+    const response = await new Promise((resolve, reject) => {
+      this.props.getPlanContext({ 
+        "item": { "companyPlanId": companyPlanId, "cpaId": cpaId } },
+         (error,response) => { 
+          if (error) {
+            reject(error)
+          } else {
+            resolve(response)
+          }
+         })
+    })
+  
+    invoicecall=response.data.invoiceApiCallTime
+    invoicecreatedby=response.data.invoiceCreatedBy
 
-        invoicecall=response.data.invoiceApiCallTime
-        invoicecreatedby=response.data.invoiceCreatedBy
+    this.setState({ InvoiceCreatedby: invoicecreatedby });
+    this.setState({ InvoiceCreatedOn: invoicecall });
+    this.setState({popoverOpen: true});
 
-       })
-       debugger;
-       this.setState({ InvoiceCreatedby: invoicecreatedby });
-        this.setState({ InvoiceCreatedOn: invoicecall });
-       this.setState({popoverOpen: true});
-      
+  } catch (error) {
+    // Handle error
+    console.log(error)
   }
+  
+}
