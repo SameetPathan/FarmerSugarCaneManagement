@@ -1,6 +1,2 @@
-<img onClick={(e) => {
-                this.props.planInfo.invoiceStatus==="INITIATED" || this.props.planInfo.invoiceStatus ==="ERROR"
-                ?this.setState({ isWarningModalInvoice: true }):""
-              }} 
-              style={{cursor:this.props.planInfo.invoiceStatus==="INITIATED" || this.props.planInfo.invoiceStatus ==="ERROR"?'pointer':'default',width:"20px",height:"20px",marginLeft:"15px"}}
-              title={this.getInvoiceIconTip(this.props.planInfo.invoiceStatus)} src={this.getInvoiceIconColor(this.props.planInfo.invoiceStatus)} ></img>
+let companyidnotInitiated=plans.filter(item=>item.invoiceStatus!=="INITIATED" && item=>item.isPlanLock===false).map(
+      item=>item.planName);
