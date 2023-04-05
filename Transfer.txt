@@ -1,34 +1,73 @@
-<Col className="col-1 padding-none center-align text-center" style={{display:"flex"}}>
-  <div className={`rollover-icon ${planItem.rolloverCompanyPlanId ? '' : 'hidden'}`}>
-    <img
-      title="Rollover Plan"
-      src="./img/rollover-icon.svg"
-      style={{
-        width: "20px",
-        height: "20px",
-        marginRight: "15px",
-      }}
-    ></img>
-  </div>
-  <div className={`lock-icon ${planItem.isPlanLock ? '' : 'hidden'}`}>
-    <img
-      title="Plan Locked"
-      src="./img/lock-icon.svg"
-      style={{
-        width: "20px",
-        height: "20px",
-        marginRight: "15px",
-      }}
-    ></img>
-  </div>
-  <div className={`invoice-icon ${props.EnabledInvoice ? '' : 'hidden'}`}>
-    { planItem.invoiceStatus === "INITIATED" || planItem.invoiceStatus === "ERROR" ? 
-      <img onClick={() => { props.togglePopover(planItem.companyPlanId, planItem.cpaId) }}
-        style={{ cursor: planItem.invoiceStatus === "INITIATED" || planItem.invoiceStatus === "ERROR" ? 'pointer' : 'default', width: "20px", height: "20px"}}
-        title={props.getInvoiceIconTip(planItem.invoiceStatus)} src={props.getInvoiceIconColor(planItem.invoiceStatus)} ></img>
-      :
-      <img title={props.getInvoiceIconTip(planItem.invoiceStatus)} src={props.getInvoiceIconColor(planItem.invoiceStatus)}
-        style={{ width: "20px", height: "20px" }}></img>
-    }
-  </div>
+<Col className="col-1 padding-none center-align text-center">
+  {planItem.rolloverCompanyPlanId && (
+    <div className="custom-code-style center-align text-center">
+      <div className="icon-container">
+        <img
+          title="Rollover Plan"
+          src="./img/rollover-icon.svg"
+          style={{
+            width: "20px",
+            height: "20px",
+            marginRight: "15px",
+          }}
+        ></img>
+      </div>
+    </div>
+  )}
+
+  {planItem.isPlanLock && (
+    <div className="custom-code-style center-align text-center">
+      <div className="icon-container">
+        <img
+          title="Plan Locked"
+          src="./img/lock-icon.svg"
+          style={{
+            width: "20px",
+            height: "20px",
+            marginRight: "15px",
+          }}
+        ></img>
+      </div>
+    </div>
+  )}
+
+  {props.EnabledInvoice && (
+    <div className="custom-code-style center-align text-center">
+      <div className="icon-container">
+        {planItem.invoiceStatus === "INITIATED" ||
+        planItem.invoiceStatus === "ERROR" ? (
+          <img
+            onClick={() => {
+              props.togglePopover(planItem.companyPlanId, planItem.cpaId);
+            }}
+            style={{
+              cursor:
+                planItem.invoiceStatus === "INITIATED" ||
+                planItem.invoiceStatus === "ERROR"
+                  ? "pointer"
+                  : "default",
+              width: "20px",
+              height: "20px",
+            }}
+            title={props.getInvoiceIconTip(planItem.invoiceStatus)}
+            src={props.getInvoiceIconColor(planItem.invoiceStatus)}
+          ></img>
+        ) : (
+          <img
+            title={props.getInvoiceIconTip(planItem.invoiceStatus)}
+            src={props.getInvoiceIconColor(planItem.invoiceStatus)}
+            style={{ width: "20px", height: "20px" }}
+          ></img>
+        )}
+      </div>
+    </div>
+  )}
 </Col>
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 15px;
+}
