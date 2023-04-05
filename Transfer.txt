@@ -1,28 +1,10 @@
-import React, { useState } from 'react';
-
-function ImageWithTooltip({ src, title }) {
-  const [showTooltip, setShowTooltip] = useState(false);
-
-  const handleButtonClick = () => {
-    setShowTooltip(true);
-  };
-
-  const handleTooltipClose = () => {
-    setShowTooltip(false);
-  };
-
-  return (
-    <div style={{ position: 'relative' }}>
-      <img src={src} alt="" title={title} />
-      <button onClick={handleButtonClick}>Show Tooltip</button>
-      {showTooltip && (
-        <div style={{ position: 'absolute', top: '-30px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#333', color: '#fff', fontSize: '12px', padding: '5px', borderRadius: '5px' }}>
-          {title}
-          <button onClick={handleTooltipClose}>Close</button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default ImageWithTooltip;
+  {props.EnabledInvoicek && (
+                      
+                        planItem.invoiceStatus === "INITIATED" || planItem.invoiceStatus === "ERROR" ?
+                        <div style={{ display: "flex" }}>  <img onClick={() => { props.togglePopover(planItem.companyPlanId, planItem.cpaId) }}
+                            style={{ cursor: planItem.invoiceStatus === "INITIATED" || planItem.invoiceStatus === "ERROR" ? 'pointer' : 'default', width: "20px", height: "20px"}}
+                            title={props.getInvoiceIconTip(planItem.invoiceStatus)} src={props.getInvoiceIconColor(planItem.invoiceStatus)} ></img> </div>
+                          :
+                          <div style={{ display: "flex" }}>   <img title={props.getInvoiceIconTip(planItem.invoiceStatus)} src={props.getInvoiceIconColor(planItem.invoiceStatus)} style={{ width: "20px", height: "20px" }}></img> </div>
+                      
+                    )}
