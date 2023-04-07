@@ -1,192 +1,53 @@
-[
-{
-"mapping": [
-{
-"abbreviation": "SPD",
-"docName": "Summary Plan Description in effect during 2022"
-},
-{
-"abbreviation": "AA",
-"docName": "Adoption Agreement, including plan amendments and participation agreements 2022"
-},
-{
-"abbreviation": "BPD",
-"docName": "Basic Plan Document"
-},
-{
-"abbreviation": "IRS",
-"docName": "IRS Opinion Letter"
-},
-{
-"abbreviation": "SATRUST",
-"docName": "Service Agreement with Recordkeeper/Trustee/Custodian"
-},
-{
-"abbreviation": "SATPA",
-"docName": "Service Agreement with TPA"
-},
-{
-"abbreviation": "SARIA",
-"docName": "Service Agreement with Investment Advisor"
-},
-{
-"abbreviation": "REV",
-"docName": "Revenue Sharing Arrangement / ERISA Spending Account"
-},
-{
-"abbreviation": "LOPO",
-"docName": "Loan Policy"
-},
-{
-"abbreviation": "EC",
-"docName": "Employee Census"
-},
-{
-"abbreviation": "PAS",
-"docName": "Participant Account Summary"
-},
-{
-"abbreviation": "TED-PAS",
-"docName": "Participant Account Summary"
-},
-{
-"abbreviation": "CON",
-"docName": "Contributions"
-},
-{
-"abbreviation": "DIST",
-"docName": "Distributions"
-},
-{
-"abbreviation": "LOAN",
-"docName": "Loans"
-},
-{
-"abbreviation": "DEFEL",
-"docName": "Deferral Elections and Changes"
-},
-{
-"abbreviation": "5500",
-"docName": "Draft 5500"
-},
-{
-"abbreviation": "MPR",
-"docName": "Master Payroll File"
-},
-{
-"abbreviation": "ENG",
-"docName": "Signed Engagement Letter"
-},
-{
-"abbreviation": "REQ",
-"docName": "Request Forms"
-},
-{
-"abbreviation": "TRUST",
-"docName": "Trust Statement"
-},
-{
-"abbreviation": "CERT",
-"docName": "Trust Certification"
-},
-{
-"abbreviation": "FIDBO",
-"docName": "Fidelity Bond"
-},
-{
-"abbreviation": "COMTEST",
-"docName": "Compliance Testing"
-},
-{
-"abbreviation": "ERCALC",
-"docName": "Employer Contribution Calculation"
-},
-{
-"abbreviation": "FEES",
-"docName": "Record Keeper Fee Disclosure"
-},
-{
-"abbreviation": "QDIA",
-"docName": "Qualified Default Investment Alternative"
-},
-{
-"abbreviation": "INALL",
-"docName": "Investment Allocation Report"
-},
-{
-"abbreviation": "MIN",
-"docName": "Committee Meeting Minutes"
-},
-{
-"abbreviation": "RR",
-"docName": "Review and Reconciliation Documentation"
-},
-{
-"abbreviation": "CYCORR",
-"docName": "Correction Information, CY"
-},
-{
-"abbreviation": "PYCORR",
-"docName": "Correction Information, PY"
-},
-{
-"abbreviation": "SUBS",
-"docName": "Subsequent Event Review Documentation"
-},
-{
-"abbreviation": "SOC",
-"docName": "Additional SOC bridge letters, if applicable"
-},
-{
-"abbreviation": "PAY",
-"docName": "W-2/W-3 Summary or Other report to verify accuracy of MPR file"
-},
-{
-"abbreviation": "AUTH",
-"docName": "Plan Transfer Authorization Documents"
-},
-{
-"abbreviation": "BLCK",
-"docName": "Blackout Notice"
-},
-{
-"abbreviation": "TRIN",
-"docName": "Transfer In Reporting"
-},
-{
-"abbreviation": "TROUT",
-"docName": "Transfer Out Reporting"
-},
-{
-"abbreviation": "CLAUTH",
-"docName": "Client Authorization Letter"
-},
-{
-"abbreviation": "PREDAUD",
-"docName": "Communication with Predecessor Auditor"
-},
-{
-"abbreviation": "PY5500",
-"docName": "Prior Year 5500"
-},
-{
-"abbreviation": "PYTRUST",
-"docName": "Prior Year Trust Statement"
-},
-{
-"abbreviation": "PYCERT",
-"docName": "Prior Year Trust Certification"
-},
-{
-"abbreviation": "PYCOMTEST",
-"docName": "Prior Year Compliance Testing"
-},
-{
-"abbreviation": "RES",
-"docName": "Research Materials"
-}
-],
-"applicableYear": "All",
-"mappingType": "NewServiceProviderDocuments"
-}
-]
+import React, { useState } from "react";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+
+const docList = [
+  {
+    "abbreviation": "SPD",
+    "docName": "Summary Plan Description in effect during 2022"
+  },
+  {
+    "abbreviation": "AA",
+    "docName": "Adoption Agreement, including plan amendments and participation agreements 2022"
+  },
+  // Add more documents here...
+];
+
+const Example = () => {
+  const [selectedDoc, setSelectedDoc] = useState(null);
+  const [selectedTab, setSelectedTab] = useState("Manual");
+
+  const toggleTab = (tab) => {
+    setSelectedTab(tab);
+  };
+
+  const handleSelectDoc = (doc) => {
+    setSelectedDoc(doc);
+  };
+
+  return (
+    <Dropdown isOpen={selectedDoc !== null} toggle={() => setSelectedDoc(null)}>
+      <DropdownToggle caret>
+        {selectedDoc ? `${selectedDoc.abbreviation} - ${selectedDoc.docName}` : "Select a document"}
+      </DropdownToggle>
+      <DropdownMenu>
+        {docList.map((doc) => (
+          <DropdownItem key={doc.abbreviation} onClick={() => handleSelectDoc(doc)}>
+            {doc.abbreviation}
+            <Dropdown isOpen={selectedDoc === doc}>
+              <DropdownToggle caret>
+                {selectedDoc === doc ? selectedTab : "Manual/Bot"}
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem onClick={() => toggleTab("Manual")}>Manual</DropdownItem>
+                <DropdownItem onClick={() => toggleTab("Bot")}>Bot</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </DropdownItem>
+        ))}
+      </DropdownMenu>
+    </Dropdown>
+  );
+};
+
+export default Example;
