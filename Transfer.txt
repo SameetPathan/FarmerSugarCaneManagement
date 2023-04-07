@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 
 const docList = [
@@ -13,41 +13,50 @@ const docList = [
   // Add more documents here...
 ];
 
-const Example = () => {
-  const [selectedDoc, setSelectedDoc] = useState(null);
-  const [selectedTab, setSelectedTab] = useState("Manual");
+class Example extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedDoc: null,
+      selectedTab: "Manual"
+    };
+  }
 
-  const toggleTab = (tab) => {
-    setSelectedTab(tab);
+  toggleTab = (tab) => {
+    this.setState({ selectedTab: tab });
   };
 
-  const handleSelectDoc = (doc) => {
-    setSelectedDoc(doc);
+  handleSelectDoc = (doc) => {
+    this.setState({ selectedDoc: doc });
   };
 
-  return (
-    <Dropdown isOpen={selectedDoc !== null} toggle={() => setSelectedDoc(null)}>
-      <DropdownToggle caret>
-        {selectedDoc ? `${selectedDoc.abbreviation} - ${selectedDoc.docName}` : "Select a document"}
-      </DropdownToggle>
-      <DropdownMenu>
-        {docList.map((doc) => (
-          <DropdownItem key={doc.abbreviation} onClick={() => handleSelectDoc(doc)}>
-            {doc.abbreviation}
-            <Dropdown isOpen={selectedDoc === doc}>
-              <DropdownToggle caret>
-                {selectedDoc === doc ? selectedTab : "Manual/Bot"}
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem onClick={() => toggleTab("Manual")}>Manual</DropdownItem>
-                <DropdownItem onClick={() => toggleTab("Bot")}>Bot</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </DropdownItem>
-        ))}
-      </DropdownMenu>
-    </Dropdown>
-  );
-};
+  render() {
+    const { selectedDoc, selectedTab } = this.state;
+
+    return (
+      <Dropdown isOpen={selectedDoc !== null} toggle={() => this.setState({ selectedDoc: null })}>
+        <DropdownToggle caret>
+          {selectedDoc ? `${selectedDoc.abbreviation} - ${selectedDoc.docName}` : "Select a document"}
+        </DropdownToggle>
+        <DropdownMenu>
+          {docList.map((doc) => (
+            <DropdownItem key={doc.abbreviation} onClick={() => this.handleSelectDoc(doc)}>
+              {doc.abbreviation}
+              <Dropdown isOpen={selectedDoc === doc}>
+                <DropdownToggle caret>
+                  {selectedDoc === doc ? selectedTab : "Manual/Bot"}
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem onClick={() => this.toggleTab("Manual")}>Manual</DropdownItem>
+                  <DropdownItem onClick={() => this.toggleTab("Bot")}>Bot</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </DropdownItem>
+          ))}
+        </DropdownMenu>
+      </Dropdown>
+    );
+  }
+}
 
 export default Example;
