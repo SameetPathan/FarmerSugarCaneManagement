@@ -1,10 +1,33 @@
-<Col sm={2} md={2} className="text-length">
-            <FormGroup>
-              <Label>Select Document </ Label>
-              <Input id="selectEndDate" type="select"  name="serviceProviderEndDate"   >
-              {this.state.docList.map((doc) => (
-                <option value= {doc.abbreviation}> {doc.abbreviation}</option>
-                ))}
-              </Input>
-            </FormGroup>
-          </Col>
+import React, { Component } from 'react';
+import { RichTextEditorComponent, Toolbar } from '@syncfusion/ej2-react-richtexteditor';
+import '@syncfusion/ej2-base/styles/material.css';
+import '@syncfusion/ej2-buttons/styles/material.css';
+import '@syncfusion/ej2-inputs/styles/material.css';
+import '@syncfusion/ej2-lists/styles/material.css';
+import '@syncfusion/ej2-navigations/styles/material.css';
+import '@syncfusion/ej2-popups/styles/material.css';
+import '@syncfusion/ej2-react-richtexteditor/styles/material.css';
+
+class RichTextEditor extends Component {
+  constructor(props) {
+    super(props);
+    this.toolbarSettings = {
+      items: ['Bold', 'Italic', 'Underline', 'StrikeThrough', 'FontName', 'FontSize', '|',
+              'Formats', 'Alignments', 'OrderedList', 'UnorderedList', '|',
+              'CreateLink', 'Image', '|', 'Undo', 'Redo']
+    };
+  }
+
+  render() {
+    return (
+      <RichTextEditorComponent
+        id="richtexteditor"
+        toolbarSettings={this.toolbarSettings}
+      >
+        <Toolbar></Toolbar>
+      </RichTextEditorComponent>
+    );
+  }
+}
+
+export default RichTextEditor;
