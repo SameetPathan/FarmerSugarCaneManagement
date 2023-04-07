@@ -1,73 +1,192 @@
-<Col className="col-1 padding-none center-align text-center">
-  {planItem.rolloverCompanyPlanId && (
-    <div className="custom-code-style center-align text-center">
-      <div className="icon-container">
-        <img
-          title="Rollover Plan"
-          src="./img/rollover-icon.svg"
-          style={{
-            width: "20px",
-            height: "20px",
-            marginRight: "15px",
-          }}
-        ></img>
-      </div>
-    </div>
-  )}
-
-  {planItem.isPlanLock && (
-    <div className="custom-code-style center-align text-center">
-      <div className="icon-container">
-        <img
-          title="Plan Locked"
-          src="./img/lock-icon.svg"
-          style={{
-            width: "20px",
-            height: "20px",
-            marginRight: "15px",
-          }}
-        ></img>
-      </div>
-    </div>
-  )}
-
-  {props.EnabledInvoice && (
-    <div className="custom-code-style center-align text-center">
-      <div className="icon-container">
-        {planItem.invoiceStatus === "INITIATED" ||
-        planItem.invoiceStatus === "ERROR" ? (
-          <img
-            onClick={() => {
-              props.togglePopover(planItem.companyPlanId, planItem.cpaId);
-            }}
-            style={{
-              cursor:
-                planItem.invoiceStatus === "INITIATED" ||
-                planItem.invoiceStatus === "ERROR"
-                  ? "pointer"
-                  : "default",
-              width: "20px",
-              height: "20px",
-            }}
-            title={props.getInvoiceIconTip(planItem.invoiceStatus)}
-            src={props.getInvoiceIconColor(planItem.invoiceStatus)}
-          ></img>
-        ) : (
-          <img
-            title={props.getInvoiceIconTip(planItem.invoiceStatus)}
-            src={props.getInvoiceIconColor(planItem.invoiceStatus)}
-            style={{ width: "20px", height: "20px" }}
-          ></img>
-        )}
-      </div>
-    </div>
-  )}
-</Col>
-.icon-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  margin-right: 15px;
+[
+{
+"mapping": [
+{
+"abbreviation": "SPD",
+"docName": "Summary Plan Description in effect during 2022"
+},
+{
+"abbreviation": "AA",
+"docName": "Adoption Agreement, including plan amendments and participation agreements 2022"
+},
+{
+"abbreviation": "BPD",
+"docName": "Basic Plan Document"
+},
+{
+"abbreviation": "IRS",
+"docName": "IRS Opinion Letter"
+},
+{
+"abbreviation": "SATRUST",
+"docName": "Service Agreement with Recordkeeper/Trustee/Custodian"
+},
+{
+"abbreviation": "SATPA",
+"docName": "Service Agreement with TPA"
+},
+{
+"abbreviation": "SARIA",
+"docName": "Service Agreement with Investment Advisor"
+},
+{
+"abbreviation": "REV",
+"docName": "Revenue Sharing Arrangement / ERISA Spending Account"
+},
+{
+"abbreviation": "LOPO",
+"docName": "Loan Policy"
+},
+{
+"abbreviation": "EC",
+"docName": "Employee Census"
+},
+{
+"abbreviation": "PAS",
+"docName": "Participant Account Summary"
+},
+{
+"abbreviation": "TED-PAS",
+"docName": "Participant Account Summary"
+},
+{
+"abbreviation": "CON",
+"docName": "Contributions"
+},
+{
+"abbreviation": "DIST",
+"docName": "Distributions"
+},
+{
+"abbreviation": "LOAN",
+"docName": "Loans"
+},
+{
+"abbreviation": "DEFEL",
+"docName": "Deferral Elections and Changes"
+},
+{
+"abbreviation": "5500",
+"docName": "Draft 5500"
+},
+{
+"abbreviation": "MPR",
+"docName": "Master Payroll File"
+},
+{
+"abbreviation": "ENG",
+"docName": "Signed Engagement Letter"
+},
+{
+"abbreviation": "REQ",
+"docName": "Request Forms"
+},
+{
+"abbreviation": "TRUST",
+"docName": "Trust Statement"
+},
+{
+"abbreviation": "CERT",
+"docName": "Trust Certification"
+},
+{
+"abbreviation": "FIDBO",
+"docName": "Fidelity Bond"
+},
+{
+"abbreviation": "COMTEST",
+"docName": "Compliance Testing"
+},
+{
+"abbreviation": "ERCALC",
+"docName": "Employer Contribution Calculation"
+},
+{
+"abbreviation": "FEES",
+"docName": "Record Keeper Fee Disclosure"
+},
+{
+"abbreviation": "QDIA",
+"docName": "Qualified Default Investment Alternative"
+},
+{
+"abbreviation": "INALL",
+"docName": "Investment Allocation Report"
+},
+{
+"abbreviation": "MIN",
+"docName": "Committee Meeting Minutes"
+},
+{
+"abbreviation": "RR",
+"docName": "Review and Reconciliation Documentation"
+},
+{
+"abbreviation": "CYCORR",
+"docName": "Correction Information, CY"
+},
+{
+"abbreviation": "PYCORR",
+"docName": "Correction Information, PY"
+},
+{
+"abbreviation": "SUBS",
+"docName": "Subsequent Event Review Documentation"
+},
+{
+"abbreviation": "SOC",
+"docName": "Additional SOC bridge letters, if applicable"
+},
+{
+"abbreviation": "PAY",
+"docName": "W-2/W-3 Summary or Other report to verify accuracy of MPR file"
+},
+{
+"abbreviation": "AUTH",
+"docName": "Plan Transfer Authorization Documents"
+},
+{
+"abbreviation": "BLCK",
+"docName": "Blackout Notice"
+},
+{
+"abbreviation": "TRIN",
+"docName": "Transfer In Reporting"
+},
+{
+"abbreviation": "TROUT",
+"docName": "Transfer Out Reporting"
+},
+{
+"abbreviation": "CLAUTH",
+"docName": "Client Authorization Letter"
+},
+{
+"abbreviation": "PREDAUD",
+"docName": "Communication with Predecessor Auditor"
+},
+{
+"abbreviation": "PY5500",
+"docName": "Prior Year 5500"
+},
+{
+"abbreviation": "PYTRUST",
+"docName": "Prior Year Trust Statement"
+},
+{
+"abbreviation": "PYCERT",
+"docName": "Prior Year Trust Certification"
+},
+{
+"abbreviation": "PYCOMTEST",
+"docName": "Prior Year Compliance Testing"
+},
+{
+"abbreviation": "RES",
+"docName": "Research Materials"
 }
+],
+"applicableYear": "All",
+"mappingType": "NewServiceProviderDocuments"
+}
+]
