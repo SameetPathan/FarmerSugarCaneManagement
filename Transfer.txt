@@ -1,59 +1,81 @@
-import React, { Component } from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import React, { Component } from 'react';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-const docList = [
-  {
-    "abbreviation": "SPD",
-    "docName": "Summary Plan Description in effect during 2022"
-  },
-  {
-    "abbreviation": "AA",
-    "docName": "Adoption Agreement, including plan amendments and participation agreements 2022"
-  },
-  // Add more documents here...
-];
-
-class Example extends Component {
+class DocumentDropdown extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      selectedDoc: null
+      dropdownOpen: false,
+      selectedDocument: '',
+      subDropdownOpen: false
     };
+
+    this.toggle = this.toggle.bind(this);
+    this.toggleSubDropdown = this.toggleSubDropdown.bind(this);
+    this.handleDocumentSelect = this.handleDocumentSelect.bind(this);
+    this.handleAuthorSelect = this.handleAuthorSelect.bind(this);
   }
 
-  handleSelectDoc = (doc) => {
-    this.setState({ selectedDoc: doc });
+  toggle() {
+    this.setState(prevState => ({
+      dropdownOpen: !prevState.dropdownOpen
+    }));
   }
 
-  toggleTab = (tab) => {
-    this.setState({ selectedTab: tab });
+  toggleSubDropdown() {
+    this.setState(prevState => ({
+      subDropdownOpen: !prevState.subDropdownOpen
+    }));
+  }
+
+  handleDocumentSelect(selectedDoc) {
+    this.setState({
+      selectedDocument: selectedDoc,
+      subDropdownOpen: true
+    });
+  }
+
+  handleAuthorSelect(selectedAuth) {
+    // do something with selected author
   }
 
   render() {
     return (
-      <FormGroup>
-        <Label for="docSelect">Select a document:</Label>
-        <Input type="select" name="docSelect" id="docSelect"
-          onChange={(e) => this.handleSelectDoc(e.target.value)}>
-          <option value="">Select a document</option>
-          {docList.map((doc) => (
-            <option value={doc.abbreviation}>{doc.abbreviation}</option>
-          ))}
-        </Input>
-        {this.state.selectedDoc && (
-          <FormGroup>
-            <Label for="tabSelect">Select tab:</Label>
-            <Input type="select" name="tabSelect" id="tabSelect"
-              onChange={(e) => this.toggleTab(e.target.value)}>
-              <option value="Manual">Manual</option>
-              <option value="Bot">Bot</option>
-            </Input>
-          </FormGroup>
-        )}
-      </FormGroup>
+      <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+        <DropdownToggle caret>
+          Select Document
+        </DropdownToggle>
+        <DropdownMenu right>
+          <DropdownItem onClick={() => this.handleDocumentSelect('Doc 1')}>
+            Doc 1
+            {this.state.selectedDocument === 'Doc 1' && (
+              <DropdownMenu right isOpen={this.state.subDropdownOpen} toggle={this.toggleSubDropdown}>
+                <DropdownItem onClick={() => this.handleAuthorSelect('Author 1')}>
+                  Author 1
+                </DropdownItem>
+                <DropdownItem onClick={() => this.handleAuthorSelect('Author 2')}>
+                  Author 2
+                </DropdownItem>
+              </DropdownMenu>
+            )}
+          </DropdownItem>
+          <DropdownItem onClick={() => this.handleDocumentSelect('Doc 2')}>
+            Doc 2
+            {this.state.selectedDocument === 'Doc 2' && (
+              <DropdownMenu right isOpen={this.state.subDropdownOpen} toggle={this.toggleSubDropdown}>
+                <DropdownItem onClick={() => this.handleAuthorSelect('Author 3')}>
+                  Author 3
+                </DropdownItem>
+                <DropdownItem onClick={() => this.handleAuthorSelect('Author 4')}>
+                  Author 4
+                </DropdownItem>
+              </DropdownMenu>
+            )}
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
     );
   }
 }
 
-export default Example;
+export default DocumentDropdown;
