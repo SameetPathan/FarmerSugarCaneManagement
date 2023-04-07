@@ -1,62 +1,13 @@
-import React, { Component } from "react";
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
-
-const docList = [
-  {
-    "abbreviation": "SPD",
-    "docName": "Summary Plan Description in effect during 2022"
-  },
-  {
-    "abbreviation": "AA",
-    "docName": "Adoption Agreement, including plan amendments and participation agreements 2022"
-  },
-  // Add more documents here...
-];
-
-class Example extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedDoc: null,
-      selectedTab: "Manual"
-    };
-  }
-
-  toggleTab = (tab) => {
-    this.setState({ selectedTab: tab });
-  };
-
-  handleSelectDoc = (doc) => {
-    this.setState({ selectedDoc: doc });
-  };
-
-  render() {
-    const { selectedDoc, selectedTab } = this.state;
-
-    return (
-      <Dropdown isOpen={selectedDoc !== null} toggle={() => this.setState({ selectedDoc: null })}>
-        <DropdownToggle caret>
-          {selectedDoc ? `${selectedDoc.abbreviation} - ${selectedDoc.docName}` : "Select a document"}
-        </DropdownToggle>
-        <DropdownMenu>
-          {docList.map((doc) => (
-            <DropdownItem key={doc.abbreviation} onClick={() => this.handleSelectDoc(doc)}>
-              {doc.abbreviation}
-              <Dropdown isOpen={selectedDoc === doc}>
-                <DropdownToggle caret>
-                  {selectedDoc === doc ? selectedTab : "Manual/Bot"}
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem onClick={() => this.toggleTab("Manual")}>Manual</DropdownItem>
-                  <DropdownItem onClick={() => this.toggleTab("Bot")}>Bot</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </DropdownItem>
-          ))}
-        </DropdownMenu>
-      </Dropdown>
-    );
-  }
-}
-
-export default Example;
+ <Col sm={2} md={2} className="text-length">
+            <FormGroup>
+              <Label>Select Type </ Label>
+              <Input id="selectEndDate" type="select"  name="serviceProviderEndDate" >
+              {this.state.docList.map((doc) => (
+            
+                <option value={doc.abbreviation}>{doc.abbreviation}</option>
+              
+                ))}
+           
+              </Input>
+            </FormGroup>
+          </Col>
