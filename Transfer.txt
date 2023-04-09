@@ -1,17 +1,76 @@
- import { 
-	RichTextEditorComponent, 
-	HtmlEditor, 
-	Table, 
-	Inject, 
-	Toolbar, 
-	Link, 
-	Image, 
-	QuickToolbar ,
-    PasteCleanup
+import React, { Component } from 'react';
+import {
+  RichTextEditorComponent,
+  HtmlEditor,
+  Table,
+  Inject,
+  Toolbar,
+  Link,
+  Image,
+  QuickToolbar,
+  PasteCleanup
 } from '@syncfusion/ej2-react-richtexteditor';
- 
- <RichTextEditorComponent
-                 ref={(richtexteditor) => { this.rteObj = richtexteditor; }}
-                 toolbarSettings={this.toolbarSettings}>
-                 <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar]} />
-             </RichTextEditorComponent>
+import AWS from 'aws-sdk';
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: '',
+      s3ImageUrl: ''
+    };
+    this.toolbarSettings = {
+      items: ['Bold', 'Italic', 'Underline', 'FontColor', 'BackgroundColor', '|',
+        'Formats', 'Alignments', 'OrderedList', 'UnorderedList', '|',
+        'CreateLink', 'Image', '|', 'Undo', 'Redo']
+    };
+    AWS.config.update({
+      accessKeyId: '<your-access-key>',
+      secretAccessKey: '<your-secret-key>',
+      region: '<your-region>'
+    });
+  }
+
+  onImageUploadSuccess = async (e) => {
+    // Get the uploaded image from the RichTextEditor
+    const file = e.file as File;
+    // Upload the file to S3
+    const s3 = new AWS.S3();
+    const params = {
+      Bucket: '<your-bucket-name>',
+      Key: `document_gathering/${file.name}`,
+      Body: file
+    };
+    const response = await s3.upload(params).promise();
+    // Set the S3 image URL in the state variable
+    this.setState({ s3ImageUrl: response.Location });
+  };
+
+  onContentChange = (args) => {
+    // Update the content state variable with the new RichTextEditor content
+    const content = args.value;
+    this.setState({ content });
+  };
+
+  render() {
+    return (
+      <div>
+        <RichTextEditorComponent
+          ref={(richtexteditor) => { this.rteObj = richtexteditor; }}
+          toolbarSettings={this.toolbarSettings}
+          imageUploadSuccess={this.onImageUploadSuccess}
+          change={this.onContentChange}
+        >
+          <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, PasteCleanup]} />
+        </RichTextEditorComponent>
+        <button onClick={() => {
+          // Construct the final HTML content with the S3 image URL and the user-entered text
+          const content = `<p>${this.state.content}</p><img src="${this.state.s3ImageUrl}" />`;
+          console.log(content); // Use the content variable as needed
+        }}>Save</button>
+      </div>
+    );
+  }
+}
+
+export default App;
