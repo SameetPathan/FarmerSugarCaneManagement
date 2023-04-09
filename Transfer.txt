@@ -10,7 +10,7 @@ import {
   QuickToolbar,
   PasteCleanup
 } from '@syncfusion/ej2-react-richtexteditor';
-import AWS from 'aws-sdk';
+import { Storage } from 'aws-amplify';
 
 class App extends Component {
   constructor(props) {
@@ -24,26 +24,17 @@ class App extends Component {
         'Formats', 'Alignments', 'OrderedList', 'UnorderedList', '|',
         'CreateLink', 'Image', '|', 'Undo', 'Redo']
     };
-    AWS.config.update({
-      accessKeyId: '<your-access-key>',
-      secretAccessKey: '<your-secret-key>',
-      region: '<your-region>'
-    });
   }
 
   onImageUploadSuccess = async (e) => {
     // Get the uploaded image from the RichTextEditor
     const file = e.file as File;
-    // Upload the file to S3
-    const s3 = new AWS.S3();
-    const params = {
-      Bucket: '<your-bucket-name>',
-      Key: `document_gathering/${file.name}`,
-      Body: file
-    };
-    const response = await s3.upload(params).promise();
+    // Upload the file to S3 using Amplify Storage module
+    const s3ImageUrl = await Storage.put(`document_gathering/${file.name}`, file, {
+      contentType: file.type,
+    });
     // Set the S3 image URL in the state variable
-    this.setState({ s3ImageUrl: response.Location });
+    this.setState({ s3ImageUrl });
   };
 
   onContentChange = (args) => {
