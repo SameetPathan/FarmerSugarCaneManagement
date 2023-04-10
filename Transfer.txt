@@ -1,176 +1,62 @@
-import React, { Component } from 'react'
-import { connect } from "react-redux";
-import { Row, Col} from 'reactstrap';
-import {  FormGroup, Label,Input , Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { 
-	RichTextEditorComponent, 
-	HtmlEditor, 
-	Table, 
-	Inject, 
-	Toolbar, 
-	Link, 
-	Image, 
-	QuickToolbar ,
-    PasteCleanup
-} from '@syncfusion/ej2-react-richtexteditor';
-import './documents.scss'
+import React, { Component } from 'react';
+import { RichTextEditorComponent, Inject, Toolbar, Image, Link, HtmlEditor, QuickToolbar, PasteCleanup } from '@syncfusion/ej2-react-richtexteditor';
 import { Storage } from 'aws-amplify';
-import { commonActions } from '../../../../actions';
 
-
-
-export class DocumentGatering extends Component {
-
+class MyComponent extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      docList: [],
-      isdocselected: false,
-      updateActivityCommentImages: [],
-      content: '',
-      s3ImageUrl: '',
-      description:"",
-      manualOrbot:"",
-      documenttype:"",
-      toolbarSettings: {
-        items: ['Bold', 'Italic', 'Underline', 'StrikeThrough', 'FontName', 'FontSize', '|',
-          'Formats', 'Alignments', 'OrderedList', 'UnorderedList', '|',
-          'CreateLink', 'Image', '|', 'Undo', 'Redo']
-      }
-    }
-
-    this.items = [
-      'Bold', 'Italic', 'Underline', 'StrikeThrough',
-      'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
-      'LowerCase', 'UpperCase', '|',
-      'Formats', 'Alignments', 'OrderedList', 'UnorderedList',
-      'Outdent', 'Indent', '|', 'CreateTable',
-      'CreateLink', 'Image', '|', 'Undo', 'Redo'
-    ];
-
-    this.toolbarSettings = {
-      items: this.items,
-      type: 'MultiRow'
+      description: '',
+      imagePath: ''
     };
 
-    this.getPlanLevelConfig = this.getPlanLevelConfig.bind(this);
-    this.onImageUploadSuccess=this.onImageUploadSuccess.bind(this);
-    this.onContentChange=this.onContentChange.bind(this);
-
+    this.toolbarSettings = {
+      items: ['Bold', 'Italic', 'Underline', '|', 'Formats', 'Alignments', '|', 'Image', 'Link', '|', 'Undo', 'Redo']
+    };
   }
 
-  onImageUploadSuccess = async (e) => {
-  debugger
-    let file=null;
-    file=e.file;
-    const s3ImageUrl = await Storage.put(`document_gathering_new_service_provider/${file.name}`, file, {
-      contentType: file.type,
+  async handleImageUpload(e) {
+    const imageFile = e.target.files[0];
+    const imageName = imageFile.name;
+    const imageType = imageFile.type;
+    const imagePath = `images/${imageName}`;
+
+    try {
+      await Storage.put(imagePath, imageFile, { contentType: imageType });
+      this.setState({
+        imagePath: imagePath
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  handleDescriptionChange(args) {
+    const description = this.rteObj.getContent();
+
+    this.setState({
+      description
     });
-    this.setState({ s3ImageUrl });
-  };
-
-  onContentChange = (e) => {
-    this.onImageUploadSuccess(e)
-    console.log("onchnage")
-    const content = e.value;
-    this.setState({ content });
-  };
-
-  componentDidMount(){
-    this.getPlanLevelConfig();
   }
-
-
-  getPlanLevelConfig() {
-    this.props.getGlobalMapping(
-        { mappingType: "NewServiceProviderDocuments", applicableYear: "All" },
-        (error, response) => {
-          if (response) {
-            let mapping = response && response[0] && response[0].mapping;
-            console.log(mapping)
-            this.setState({docList: mapping});
-          }
-        }
-      );
-  }
-
-
 
   render() {
     return (
       <div>
-        <Row className="label-field-align m-2">
-        <Col sm={2} md={2} className="text-length">
-            <FormGroup>
-              <Label>Select Document </ Label>
-              <Input id="selectEndDate" type="select"  name="serviceProviderEndDate" onChange={()=>this.setState({isdocselected: true})}   >
-              {this.state.docList.map((doc) => (
-                <option value= {doc.abbreviation}> {doc.abbreviation}</option>
-                ))}
-              </Input>
-            </FormGroup>
-          </Col>
-          
-          <Col sm={2} md={2} className="text-length">
-          {this.state.isdocselected ?
-            <FormGroup>
-              <Label>Select Type </ Label>
-              <Input id="selectEndDate" type="select"  name="serviceProviderEndDate" >
-                <option value={"Manual"}>{"Manual"}</option>
-                <option value={"Bot"}>{"Bot"}</option>
-           
-              </Input>
-            </FormGroup>:null
-          }
-          </Col>
-
-        </Row>
-
-        <div className='container p-5' style={{marginLeft:"-17px"}}>
-        <FormGroup row className="mb-1">
-
-        <div>
         <RichTextEditorComponent
           ref={(richtexteditor) => { this.rteObj = richtexteditor; }}
           toolbarSettings={this.toolbarSettings}
-          change={(e)=>this.onContentChange(e)}
+          change={this.handleDescriptionChange.bind(this)}
         >
           <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, PasteCleanup]} />
         </RichTextEditorComponent>
-        <button onClick={() => {
-          const content = `<p>${this.state.content}</p><img src="${this.state.s3ImageUrl}" />`;
-          console.log(content); 
-        }}>Save</button>
-      </div>
 
-    
+        <input type="file" onChange={this.handleImageUpload.bind(this)} />
 
-        <Label><b>Instructions</b> </ Label>
-         <Col className="customRichTextEditor mt-2 pl-0 text-left">
-             <RichTextEditorComponent
-                 ref={(richtexteditor) => { this.rteObj = richtexteditor; }}
-                 toolbarSettings={this.toolbarSettings}>
-                 <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar]} />
-             </RichTextEditorComponent>
-           
-         </Col>
-        </FormGroup>
-        </div>
+        <button onClick={() => console.log(this.state)}>Save</button>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => {
-  const { selectedCPA } = state;
-  return { selectedCPA };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  showLoader: () => dispatch(commonActions.showLoader()),
-  hideLoader: () => dispatch(commonActions.hideLoader()),
-  getGlobalMapping: (queryDetails, callback) =>
-    dispatch(commonActions.getGlobalMapping(queryDetails, callback)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(DocumentGatering)
+export default MyComponent;
