@@ -1,20 +1,49 @@
-[
-'PD_YearEndPayrollReport_Participant', 
- 'PD_PlanFeeDisclosure_Plan', 
- 'T_Materiality_PlanYear', 
- 'ARD_DistributionSummary_PlanYear', 
- 'ARD_EmployeeCensus_Participant', 
- 'ARD_TrialBalanceAccounts_PlanYear', 
- 'CompanyPlanAuditSteps', 
- 'PI_BasicPlanInformation_PlanYear', 
- 'ARD_Form5500_PlanYear', 
- 'ARD_ParticipantAccountSummary_Participant', 
- 'AuditStepLog', 
- 'ARD_LoanSummary_PlanYear' 
-]
-
-["['PD_YearEndPayrollReport_Participant','PD_PlanFeeDisclosure_Plan','T_Materiality_PlanYear','ARD_DistributionSummary_PlanYear','ARD_EmployeeCensus_Participant','ARD_TrialBalanceAccounts_PlanYear','CompanyPlanAuditSteps','PI_BasicPlanInformation_PlanYear','ARD_Form5500_PlanYear','ARD_ParticipantAccountSummary_Participant','AuditStepLog','ARD_LoanSummary_PlanYear']"]
-
-
-
-('AS_DI-1', "[\n'MISC_ManualInputProgramWide_Global', \n 'T_DataIntelligence_PlanYear', \n 'PD_PayPeriodPayrollReport_Participant', \n 'PI_BasicPlanInformation_PlanYear', \n 'ARD_Contributions_Participant', \n 'CompanyPlanAuditSteps', \n 'AuditStepLog' \n]\n"),
+{
+"serviceName": "AS_DI-1OperationService",
+"version": "v21",
+"cpaId": "PKP",
+"serviceType":"OperationalPlanDataCopy",
+"transferOperations": {
+ "base": "destination",
+ "base_key": "cpaId",
+"serialOperations": [
+ {
+ "description": "Copy T_DataIntelligence_PlanYear Data",
+ "filtration": {
+ "require_data": "all"
+ },
+"read": {
+ "fetch_by": "hash_key",
+ "sourceTable": "T_DataIntelligence_PlanYear"
+ },
+ "transformation": [
+"cpaId = var(destination:cpaId)",
+ "companyPlanId = var(destination:companyPlanId)"
+ ],
+ "write": { "batchOperation": true,
+ "destinationTable": "T_DataIntelligence_PlanYear"
+ }
+},
+{
+ "description": "PD_PayPeriodPayrollReport_Participant",
+ "filtration": {
+"require_data": "all"
+ },
+ "read": {
+ "fetch_by": "hash_key",
+ "sourceTable": "'PD_PayPeriodPayrollReport_Participant"
+ },
+ "masking_attributes": [
+ ],
+ "transformation": [
+ "cpaId = var(destination:cpaId)",
+ "companyPlanId = var(destination:companyPlanId)"
+ ],
+ "write": {
+ "batchOperation": true,
+ "destinationTable": "'PD_PayPeriodPayrollReport_Participant"
+ }
+ }
+ ]
+}
+}
