@@ -1,78 +1,14 @@
-import React, { Component } from 'react';
-import { RichTextEditorComponent, Inject, Toolbar, Image, Link, HtmlEditor, QuickToolbar, PasteCleanup } from '@syncfusion/ej2-react-richtexteditor';
-import { Storage } from 'aws-amplify';
-import { withAuthenticator } from '@aws-amplify/ui-react';
+import pandas as pd
 
-class MyComponent extends Component {
-  constructor(props) {
-    super(props);
+# Read the Excel file
+df = pd.read_excel('filename.xlsx')
 
-    this.state = {
-      description: ''
-    };
+# Extract the data from the three columns
+column1_data = df['Column1'].tolist()
+column2_data = df['Column2'].tolist()
+column3_data = df['Column3'].tolist()
 
-    this.toolbarSettings = {
-      items: ['Bold', 'Italic', 'Underline', '|', 'Formats', 'Alignments', '|', 'Image', 'Link', '|', 'Undo', 'Redo']
-    };
-  }
-
-  async handleDescriptionChange(args) {
-    const description = this.rteObj.getContent();
-
-    // Upload any images to S3 and replace local URLs with S3 URLs
-    const parser = new DOMParser();
-    const htmlDoc = parser.parseFromString(description, 'text/html');
-    const imgTags = htmlDoc.getElementsByTagName('img');
-    const promises = [];
-
-    for (let i = 0; i < imgTags.length; i++) {
-      const imgTag = imgTags[i];
-      const src = imgTag.src;
-
-      if (src.startsWith('data:image/')) {
-        const dataUrl = src.split(',')[1];
-        const contentType = src.split(';')[0].split(':')[1];
-        const extension = contentType.split('/')[1];
-        const filename = Date.now().toString() + '.' + extension;
-
-        promises.push(
-          Storage.put('images/' + filename, new Buffer.from(dataUrl, 'base64'), {
-            contentType: contentType
-          }).then((data) => {
-            imgTag.src = data.key;
-          }).catch((err) => {
-            console.error(err);
-          })
-        );
-      }
-    }
-
-    Promise.all(promises).then(() => {
-      const updatedDescription = htmlDoc.body.innerHTML;
-
-      this.setState({
-        description: updatedDescription
-      });
-    }).catch((err) => {
-      console.error(err);
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <RichTextEditorComponent
-          ref={(richtexteditor) => { this.rteObj = richtexteditor; }}
-          toolbarSettings={this.toolbarSettings}
-          change={this.handleDescriptionChange.bind(this)}
-        >
-          <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, PasteCleanup]} />
-        </RichTextEditorComponent>
-
-        <button onClick={() => console.log(this.state)}>Save</button>
-      </div>
-    );
-  }
-}
-
-export default withAuthenticator(MyComponent);
+# Loop through the rows and print the data for each row
+for i in range(len(column1_data)):
+    row_data = (column1_data[i], column2_data[i], column3_data[i])
+    print(row_data)
