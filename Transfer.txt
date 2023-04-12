@@ -1,49 +1,74 @@
-{
-"serviceName": "AS_DI-1OperationService",
-"version": "v21",
-"cpaId": "PKP",
-"serviceType":"OperationalPlanDataCopy",
-"transferOperations": {
- "base": "destination",
- "base_key": "cpaId",
-"serialOperations": [
- {
- "description": "Copy T_DataIntelligence_PlanYear Data",
- "filtration": {
- "require_data": "all"
- },
-"read": {
- "fetch_by": "hash_key",
- "sourceTable": "T_DataIntelligence_PlanYear"
- },
- "transformation": [
-"cpaId = var(destination:cpaId)",
- "companyPlanId = var(destination:companyPlanId)"
- ],
- "write": { "batchOperation": true,
- "destinationTable": "T_DataIntelligence_PlanYear"
- }
-},
-{
- "description": "PD_PayPeriodPayrollReport_Participant",
- "filtration": {
-"require_data": "all"
- },
- "read": {
- "fetch_by": "hash_key",
- "sourceTable": "'PD_PayPeriodPayrollReport_Participant"
- },
- "masking_attributes": [
- ],
- "transformation": [
- "cpaId = var(destination:cpaId)",
- "companyPlanId = var(destination:companyPlanId)"
- ],
- "write": {
- "batchOperation": true,
- "destinationTable": "'PD_PayPeriodPayrollReport_Participant"
- }
- }
- ]
+json_data = {
+    "serviceName": "AS_DI-1OperationService",
+    "version": "v21",
+    "cpaId": "PKP",
+    "serviceType": "OperationalPlanDataCopy",
+    "transferOperations": {
+        "base": "destination",
+        "base_key": "cpaId",
+        "serialOperations": []
+    }
 }
+
+# Loop to add multiple serialOperations
+for i in range(3):
+    description = input(f"Enter description for operation {i+1}: ")
+    source_table = input(f"Enter sourceTable for operation {i+1}: ")
+    destination_table = input(f"Enter destinationTable for operation {i+1}: ")
+    
+    # Create dictionary for the current serialOperation
+    operation = {
+        "description": description,
+        "filtration": {"require_data": "all"},
+        "read": {
+            "fetch_by": "hash_key",
+            "sourceTable": source_table
+        },
+        "transformation": [
+            "cpaId = var(destination:cpaId)",
+            "companyPlanId = var(destination:companyPlanId)"
+        ],
+        "write": {
+            "batchOperation": True,
+            "destinationTable": destination_table
+        }
+    }
+    
+    # Append the dictionary to the list of serialOperations
+    json_data["transferOperations"]["serialOperations"].append(operation)
+
+print(json_data)
+
+
+
+
+
+
+
+# User input
+description = "Copy PD_PlanFeeDisclosure_Plan Data"
+source_table = "PD_PlanFeeDisclosure_Plan"
+destination_table = "PD_PlanFeeDisclosure_Plan_Copy"
+
+# Create new serial operation
+new_serial_operation = {
+    "description": description,
+    "filtration": {
+        "require_data": "all"
+    },
+    "read": {
+        "fetch_by": "hash_key",
+        "sourceTable": source_table
+    },
+    "transformation": [
+        "cpaId = var(destination:cpaId)",
+        "companyPlanId = var(destination:companyPlanId)"
+    ],
+    "write": {
+        "batchOperation": True,
+        "destinationTable": destination_table
+    }
 }
+
+# Add new serial operation to existing JSON data
+json_data["transferOperations"]["serialOperations"].append(new_serial_operation)
