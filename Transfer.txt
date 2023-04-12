@@ -13,5 +13,8 @@
  'ARD_LoanSummary_PlanYear' 
 ]
 
+["['PD_YearEndPayrollReport_Participant','PD_PlanFeeDisclosure_Plan','T_Materiality_PlanYear','ARD_DistributionSummary_PlanYear','ARD_EmployeeCensus_Participant','ARD_TrialBalanceAccounts_PlanYear','CompanyPlanAuditSteps','PI_BasicPlanInformation_PlanYear','ARD_Form5500_PlanYear','ARD_ParticipantAccountSummary_Participant','AuditStepLog','ARD_LoanSummary_PlanYear']"]
+
+
 
 ('AS_DI-1', "[\n'MISC_ManualInputProgramWide_Global', \n 'T_DataIntelligence_PlanYear', \n 'PD_PayPeriodPayrollReport_Participant', \n 'PI_BasicPlanInformation_PlanYear', \n 'ARD_Contributions_Participant', \n 'CompanyPlanAuditSteps', \n 'AuditStepLog' \n]\n"),
