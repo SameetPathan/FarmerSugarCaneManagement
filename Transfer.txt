@@ -1,74 +1,170 @@
-json_data = {
-    "serviceName": "AS_DI-1OperationService",
-    "version": "v21",
-    "cpaId": "PKP",
-    "serviceType": "OperationalPlanDataCopy",
-    "transferOperations": {
-        "base": "destination",
-        "base_key": "cpaId",
-        "serialOperations": []
-    }
-}
-
-# Loop to add multiple serialOperations
-for i in range(3):
-    description = input(f"Enter description for operation {i+1}: ")
-    source_table = input(f"Enter sourceTable for operation {i+1}: ")
-    destination_table = input(f"Enter destinationTable for operation {i+1}: ")
-    
-    # Create dictionary for the current serialOperation
-    operation = {
-        "description": description,
-        "filtration": {"require_data": "all"},
-        "read": {
-            "fetch_by": "hash_key",
-            "sourceTable": source_table
-        },
-        "transformation": [
-            "cpaId = var(destination:cpaId)",
-            "companyPlanId = var(destination:companyPlanId)"
-        ],
-        "write": {
-            "batchOperation": True,
-            "destinationTable": destination_table
-        }
-    }
-    
-    # Append the dictionary to the list of serialOperations
-    json_data["transferOperations"]["serialOperations"].append(operation)
-
-print(json_data)
-
-
-
-
-
-
-
-# User input
-description = "Copy PD_PlanFeeDisclosure_Plan Data"
-source_table = "PD_PlanFeeDisclosure_Plan"
-destination_table = "PD_PlanFeeDisclosure_Plan_Copy"
-
-# Create new serial operation
-new_serial_operation = {
-    "description": description,
-    "filtration": {
-        "require_data": "all"
+[
+    {
+        "abbreviation": "PKSP",
+        "levelOfApproval": 2,
+        "service_provider_name": "pkService provider",
+        "ending_date": "11/30/2022"
     },
-    "read": {
-        "fetch_by": "hash_key",
-        "sourceTable": source_table
+    {
+        "abbreviation": "ntp",
+        "levelOfApproval": 2,
+        "service_provider_name": "new to push",
+        "ending_date": "05/27/2022"
     },
-    "transformation": [
-        "cpaId = var(destination:cpaId)",
-        "companyPlanId = var(destination:companyPlanId)"
-    ],
-    "write": {
-        "batchOperation": True,
-        "destinationTable": destination_table
+    {
+        "abbreviation": "AUTJAN",
+        "levelOfApproval": 2,
+        "service_provider_name": "JanuaryAUT",
+        "ending_date": "01/12/2023"
+    },
+    {
+        "abbreviation": "13Jan",
+        "levelOfApproval": 2,
+        "service_provider_name": "13Jan",
+        "ending_date": "01/13/2023"
+    },
+    {
+        "abbreviation": "TST-LL",
+        "levelOfApproval": 2,
+        "service_provider_name": "Test(TST-LL)",
+        "ending_date": "01/10/2023"
+    },
+    {
+        "abbreviation": "t123",
+        "levelOfApproval": 2,
+        "service_provider_name": "t123",
+        "ending_date": "01/13/2023"
+    },
+    {
+        "abbreviation": "ST2023",
+        "levelOfApproval": 2,
+        "service_provider_name": "SOC",
+        "ending_date": "12/31/2022"
+    },
+    {
+        "abbreviation": "ADP-PP",
+        "levelOfApproval": 2,
+        "service_provider_name": "ADP",
+        "ending_date": "09/30/2020"
+    },
+    {
+        "abbreviation": "SOCAPP",
+        "levelOfApproval": 2,
+        "service_provider_name": "SOCAPP",
+        "ending_date": "12/31/2022"
+    },
+    {
+        "abbreviation": "t1234",
+        "levelOfApproval": 2,
+        "service_provider_name": "test123",
+        "ending_date": "02/22/2023"
+    },
+    {
+        "abbreviation": "NEWSP2023",
+        "levelOfApproval": 2,
+        "service_provider_name": "NEWSP",
+        "ending_date": "12/31/2022"
+    },
+    {
+        "abbreviation": "TST-PL",
+        "levelOfApproval": 2,
+        "service_provider_name": "Test(TST-PL)",
+        "ending_date": "10/10/2022"
+    },
+    {
+        "abbreviation": "newsoc2023",
+        "levelOfApproval": 2,
+        "service_provider_name": "NewSOC",
+        "ending_date": "12/31/2022"
+    },
+    {
+        "abbreviation": "tnf",
+        "levelOfApproval": 2,
+        "service_provider_name": "test new feb",
+        "ending_date": "02/21/2023"
+    },
+    {
+        "abbreviation": "pkjan",
+        "levelOfApproval": 2,
+        "service_provider_name": "pkjan",
+        "ending_date": "01/12/2023"
+    },
+    {
+        "abbreviation": "testdata2023",
+        "levelOfApproval": 2,
+        "service_provider_name": "Finaltestdata",
+        "ending_date": "12/31/2022"
+    },
+    {
+        "abbreviation": "ADPWN-PP",
+        "levelOfApproval": 2,
+        "service_provider_name": "ADP Workforce Now",
+        "ending_date": "09/30/2021"
+    },
+    {
+        "abbreviation": "JHK-RK",
+        "levelOfApproval": 2,
+        "service_provider_name": "John Hancock",
+        "ending_date": "12/31/2021"
+    },
+    {
+        "abbreviation": "jan",
+        "levelOfApproval": 2,
+        "service_provider_name": "testJan",
+        "ending_date": "01/13/2023"
+    },
+    {
+        "abbreviation": "SOCTEST",
+        "levelOfApproval": 2,
+        "service_provider_name": "SOCTEST1",
+        "ending_date": "12/31/2022"
+    },
+    {
+        "abbreviation": "SOC2023",
+        "levelOfApproval": 2,
+        "service_provider_name": "Newtest2023",
+        "ending_date": "01/05/2023"
+    },
+    {
+        "abbreviation": "NSPF",
+        "levelOfApproval": 2,
+        "service_provider_name": "NEW service provider feb",
+        "ending_date": "02/28/2023"
+    },
+    {
+        "abbreviation": "finaltest",
+        "levelOfApproval": 2,
+        "service_provider_name": "final",
+        "ending_date": "12/31/2022"
+    },
+    {
+        "abbreviation": "testsoc2023",
+        "levelOfApproval": 2,
+        "service_provider_name": "test",
+        "ending_date": "01/05/2022"
+    },
+    {
+        "abbreviation": "test32023",
+        "levelOfApproval": 2,
+        "service_provider_name": "Test132023",
+        "ending_date": "12/31/2022"
+    },
+    {
+        "abbreviation": "ADP-RK",
+        "levelOfApproval": 2,
+        "service_provider_name": "ADP",
+        "ending_date": "12/31/2021"
+    },
+    {
+        "abbreviation": "T2022",
+        "levelOfApproval": 2,
+        "service_provider_name": "Test Jan 2022",
+        "ending_date": "01/10/2023"
+    },
+    {
+        "abbreviation": "APPTEST",
+        "levelOfApproval": 2,
+        "service_provider_name": "APPTEST",
+        "ending_date": "12/31/2022"
     }
-}
-
-# Add new serial operation to existing JSON data
-json_data["transferOperations"]["serialOperations"].append(new_serial_operation)
+]
