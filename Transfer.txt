@@ -1,1 +1,8 @@
- localProviders = localProviders.filter(soc => soc.abbreviation_endingdate_planyear == abbreviation_endingdate_planyear)
+<select onChange={(e)=>this.selectionHandle(e.target.value)} style={{ borderRadius: "3px", marginLeft: "80px", width: "240px", height: "26px", fontSize: "14px" }} type="select"  >
+                                        <option value={"NONE"}>{"Select Service Provider"}</option>
+                                        {this.state.fetchedServiceProvider.map((data,index)=>(
+                                            <option key={index} value={data.abbreviation_endingdate_planyear}>
+                                                {data.abbreviation_endingdate_planyear.split}
+                                            </option>
+                                        ))}
+                                        </select>
