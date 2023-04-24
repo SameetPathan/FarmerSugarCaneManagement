@@ -3,3 +3,11 @@
 
 
 [{'S': 'group_PKP_1672560000000'}]
+
+
+  update_params = {
+                'TableName': 'Plan',
+                'Key': {'companyPlanId': {'S': companyPlanID}},
+                'UpdateExpression': 'SET beginningDatePlanToBeAudited=:val,datePlanToBeAudited=:val2',
+                'ExpressionAttributeValues': {':val': {'S': datebegin_str}, ':val2': {'S': dateend_str}}
+            }
