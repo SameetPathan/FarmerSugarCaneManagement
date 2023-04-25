@@ -1,16 +1,21 @@
-    if month == 12 and 25 <= day <= 30:
-        if day == 25:
-            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=358)
-        elif day == 26:
-            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=359)
-        elif day == 27:
-            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=360)
-        elif day == 28:
-            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=361)
-        elif day == 29:
-            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=362)
-        elif day == 30:
+if month == 12 and 25 <= day <= 30:
+    if day == 25:
+        beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=358)
+    elif day == 26:
+        beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=359)
+    elif day == 27:
+        beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=360)
+    elif day == 28:
+        beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=361)
+    elif day == 29:
+        if (datePlanToBeAudited.year % 4 == 0 and datePlanToBeAudited.year % 100 != 0) or datePlanToBeAudited.year % 400 == 0:
             beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=363)
-
-    else:
-        beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=364)
+        else:
+            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=362)
+    elif day == 30:
+        if (datePlanToBeAudited.year % 4 == 0 and datePlanToBeAudited.year % 100 != 0) or datePlanToBeAudited.year % 400 == 0:
+            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=364)
+        else:
+            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=363)
+else:
+    beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=364)
