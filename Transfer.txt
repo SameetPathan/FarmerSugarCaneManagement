@@ -1,21 +1,13 @@
-if month == 12 and 25 <= day <= 30:
-    if day == 25:
-        beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=358)
-    elif day == 26:
-        beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=359)
-    elif day == 27:
-        beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=360)
-    elif day == 28:
-        beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=361)
-    elif day == 29:
-        if (datePlanToBeAudited.year % 4 == 0 and datePlanToBeAudited.year % 100 != 0) or datePlanToBeAudited.year % 400 == 0:
-            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=363)
-        else:
-            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=362)
-    elif day == 30:
-        if (datePlanToBeAudited.year % 4 == 0 and datePlanToBeAudited.year % 100 != 0) or datePlanToBeAudited.year % 400 == 0:
-            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=364)
-        else:
-            beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=363)
-else:
-    beginningDatePlanToBeAudited = datePlanToBeAudited - timedelta(days=364)
+ <div style={{ display: 'flex'}}>
+                                <div style={{ flex: 1 }}>Audit Step Procedure</div>
+                                <div style={{ flex: 1,marginLeft:'50px' }}>
+                                        <select onChange={(e)=>this.selectionHandle(e.target.value)} style={{ borderRadius: "3px", marginLeft: "80px", width: "240px", height: "26px", fontSize: "14px" }} type="select"  >
+                                        <option value={"NONE"}>{"Select Service Provider"}</option>
+                                        {this.state.fetchedServiceProvider.map((data,index)=>(
+                                            <option key={index} value={data.abbreviation_endingdate_planyear}>
+                                                {data.abbreviation_endingdate_planyear.split("_")[0]+"_"+data.abbreviation_endingdate_planyear.split("_")[1].slice(0,10)}
+                                            </option>
+                                        ))}
+                                        </select>
+                                </div>
+                            </div>
