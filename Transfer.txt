@@ -1,2 +1,13 @@
-const filteredData = data.filter(item => item.abbreviation_endingdate_planyear.includes("RK"));
-const rkValues = filteredData.map(item => item.abbreviation_endingdate_planyear);
+ <div style={{ display: 'flex'}}>
+                                <div style={{ flex: 1 }}>Audit Step Procedure</div>
+                                <div style={{ flex: 1,marginLeft:'50px' }}>
+                                        <select  onChange={(e)=>this.selectionHandle(e.target.value)} style={{ borderRadius: "3px", marginLeft: "80px", width: "240px", height: "26px", fontSize: "14px" }} type="select"  >
+                                        <option value={"NONE"}>{"Select Service Provider"}</option>
+                                        {this.state.fetchedServiceProvider.map((data,index)=>(
+                                            <option selected={data.abbreviation_endingdate_planyear.includes("RK")?data.abbreviation_endingdate_planyear:"NONE"} key={index} value={data.abbreviation_endingdate_planyear}>
+                                                {data.abbreviation_endingdate_planyear.split("_")[0]+"_"+data.abbreviation_endingdate_planyear.split("_")[1].slice(0,10)}
+                                            </option>
+                                        ))}
+                                        </select>
+                                </div>
+                            </div>
