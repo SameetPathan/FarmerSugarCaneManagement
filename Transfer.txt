@@ -1,13 +1,21 @@
- <div style={{ display: 'flex'}}>
-                                <div style={{ flex: 1 }}>Audit Step Procedure</div>
-                                <div style={{ flex: 1,marginLeft:'50px' }}>
-                                        <select  onChange={(e)=>this.selectionHandle(e.target.value)} style={{ borderRadius: "3px", marginLeft: "80px", width: "240px", height: "26px", fontSize: "14px" }} type="select"  >
-                                        <option value={"NONE"}>{"Select Service Provider"}</option>
-                                        {this.state.fetchedServiceProvider.map((data,index)=>(
-                                            <option selected={data.abbreviation_endingdate_planyear.includes("RK")?data.abbreviation_endingdate_planyear:"NONE"} key={index} value={data.abbreviation_endingdate_planyear}>
-                                                {data.abbreviation_endingdate_planyear.split("_")[0]+"_"+data.abbreviation_endingdate_planyear.split("_")[1].slice(0,10)}
-                                            </option>
-                                        ))}
-                                        </select>
-                                </div>
-                            </div>
+{
+ "versionCpaId": "v2021_PKP",
+ "serviceProviderAbbreviation": "ADED",
+ "approve": false,
+ "cpaId": "AUT",
+ "dataPreprocessing": {
+  "editedFilePath": "https://reactapp-userfiles-mobilehub-419804044.s3.us-east-1.amazonaws.com/public/NewServiceProviderDataPreprocessing/v2021_PKP/ADED/51482d25-2611-41d4-90fc-453e73168d26%20%281%29.xlsx",
+  "fileDetails": {
+   "edited": {
+    "name": "51482d25-2611-41d4-90fc-453e73168d26 (1).xlsx",
+    "size": 18571,
+    "type": "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+   },
+   "original": {
+    "name": "Test PDF5.pdf",
+    "size": 31359,
+    "type": "pdf"
+   }
+  },
+  "originalFilePath": "https://reactapp-userfiles-mobilehub-419804044.s3.us-east-1.amazonaws.com/public/NewServiceProviderDataPreprocessing/v2021_PKP/ADED/Test%20PDF5.pdf"
+ },   now in delete api in node js i get versionCpaId and serviceProviderAbbreviation which are keys in aws dynamodb table and i get originalFilePath or editedfilepath in request after getting i want to delete the record from table and also from aws stroage which i have path
